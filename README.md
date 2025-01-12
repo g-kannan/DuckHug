@@ -20,7 +20,10 @@ Query Hugging Face datasets directly from Streamlit using DuckDB's powerful SQL 
 - 🌟 Modern Streamlit-based UI
 - 🔗 Direct links to Hugging Face dataset pages
 
-## Getting Started
+### Live app
+https://duckhug.streamlit.app/
+
+## Getting Started(Locally)
 1. Install dependencies: `pip install -r requirements.txt`
 2. Run the app: `streamlit run home.py`
 3. Start exploring datasets!
