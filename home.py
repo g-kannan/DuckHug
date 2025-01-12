@@ -69,7 +69,7 @@ st.write(locate_dataset)
 view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/*/*.parquet') );"
 select_query = f"SELECT * FROM {view_name} limit 100;"
 top1_query = f"SELECT * FROM {view_name} limit 1;"
-st.code(view_query + "\n\n" + select_query)
+st.code(view_query + "\n\n" + select_query,language='SQL',line_numbers=True,wrap_lines=True)
 if st.button("Preview Dataset(100 Rows)"):
     try:
         conn.execute(view_query)
