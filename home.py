@@ -62,7 +62,7 @@ else:
     view_name = dataset_to_preview.replace("/","_").replace("-","_").replace(".","_").upper()
 st.write("view_name: " + view_name)
 st.write("Locate this dataset on Hugging Face: https://huggingface.co/datasets/" + dataset_to_preview)
-view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/train/*.parquet') );"
+view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/*/*.parquet') );"
 select_query = f"SELECT * FROM {view_name} limit 1000;"
 st.code(view_query + "\n\n" + select_query)
 if st.button("Preview Dataset(1000 Rows)"):
