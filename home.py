@@ -7,6 +7,9 @@ import polars as pl
 if 'datasets' not in st.session_state:
     st.session_state.datasets = []
 
+if 'show_input' not in st.session_state:
+    st.session_state.show_input = False
+
 conn = duckdb.connect(database=':memory:')
 conn.execute("INSTALL httpfs;LOAD httpfs;")
 
@@ -26,6 +29,7 @@ file_formats = ["csv","arrow","parquet"]
 
 file_format = st.selectbox("Select File Format", file_formats)
 sort_option = st.selectbox("Select Sort Option", list(sort_options.keys()))
+
 # limit = st.number_input("Enter number of datasets to display", min_value=1, value=10)
 
 if st.button("Fetch Datasets"):
@@ -33,9 +37,22 @@ if st.button("Fetch Datasets"):
     dataset_props = get_hf_datasets(sort_by,file_format)
     st.session_state.datasets = [dataset[0] for dataset in dataset_props]
     props_df = pl.DataFrame(dataset_props, schema=["id", "description"])
-    st.write(f"Fetched {len(st.session_state.datasets)} datasets")
+    if len(st.session_state.datasets) == 0:
+        st.info("No datasets found, please try different sort option or file format or enter manually")
+    else:
+        st.info(f"Fetched {len(st.session_state.datasets)} datasets")
     st.dataframe(props_df,hide_index=True,use_container_width=True)
     # st.write(st.session_state.datasets)
+
+if st.button("Manually enter dataset"):
+    st.session_state.show_input = True
+
+# Show the input field if the button was clicked
+if st.session_state.show_input:
+    manual_dataset = st.text_input("Enter dataset name", key="manual_dataset_input")
+    if st.button("Add Dataset"):
+        st.session_state.datasets.append(manual_dataset)
+        st.success(f"Added dataset: {manual_dataset}")
 
 dataset_to_preview = st.selectbox("Select dataset to preview", st.session_state.datasets)
 if dataset_to_preview is None:
@@ -48,7 +65,7 @@ st.write("Locate this dataset on Hugging Face: https://huggingface.co/datasets/"
 view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/train/*.parquet') );"
 select_query = f"SELECT * FROM {view_name} limit 1000;"
 st.code(view_query + "\n\n" + select_query)
-if st.button("Preview Dataset"):
+if st.button("Preview Dataset(1000 Rows)"):
     conn.execute(view_query)
     result_df = conn.sql(select_query).df()
     # result_df = conn.sql("SELECT * FROM read_parquet('hf://datasets/nyuuzyou/subdomains@~parquet/default/train/*.parquet') limit 1000;").df()
@@ -57,3 +74,9 @@ if st.button("Preview Dataset"):
     # cornell-movie-review-data/rotten_tomatoes
     st.dataframe(result_df,hide_index=True,use_container_width=True)
     # st.write(result_df)
+
+query = st.text_area("Enter your query",value=f"{select_query}")
+if st.button("Run Query"):
+    conn.execute(view_query)
+    result_df = conn.sql(query).df()
+    st.dataframe(result_df,hide_index=True,use_container_width=True)
