@@ -35,4 +35,5 @@ https://duckhug.streamlit.app/
 - Built with ❤️ for the data community
 
 ## Support
+Found an issue or have suggestions? [Open an issue](https://github.com/g-kannan/DuckHug/issues/new/choose)
 If you find this useful, please [give us a star on GitHub](https://github.com/g-kannan/DuckHug)!

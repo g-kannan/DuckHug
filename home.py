@@ -96,6 +96,7 @@ if st.button("Run Query"):
 
 st.divider()
 st.write("Thanks to the Hugging Face & DuckDB team for thier awesome work")
-st.write("If you still havent starred DuckDB, please do it first: https://github.com/duckdb/duckdb")
-st.write("DuckHug Logo was created using Hugging Face model: https://huggingface.co/black-forest-labs/FLUX.1-dev")
-st.write("If you find this useful, please give us a star on GitHub: https://github.com/g-kannan/DuckHug")
+st.write("If you still havent starred DuckDB, please do it first: [DuckDB](https://github.com/duckdb/duckdb)")
+st.write("DuckHug Logo was created using Hugging Face model: [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev)")
+st.write("Found an issue or have suggestions? [Open an issue](https://github.com/g-kannan/DuckHug/issues/new/choose)")
+st.write("If you find this useful, please give us a star on GitHub: [DuckHug](https://github.com/g-kannan/DuckHug)")
