@@ -39,7 +39,7 @@ if st.button("Fetch Datasets"):
     sort_by = sort_options[sort_option]
     dataset_props = get_hf_datasets(sort_by,file_format)
     st.session_state.datasets = [dataset[0] for dataset in dataset_props]
-    props_df = pl.DataFrame(dataset_props, schema=["id", "description"])
+    props_df = pl.DataFrame(dataset_props, schema=["id", "description"], orient="row")
     if len(st.session_state.datasets) == 0:
         st.info("No datasets found, please try different sort option or file format or enter manually")
     else:
