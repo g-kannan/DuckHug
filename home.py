@@ -19,7 +19,7 @@ conn.execute("INSTALL httpfs;LOAD httpfs;")
 st.set_page_config(page_title="DuckHug",layout="wide")
 
 st.image("public/duckhug_logo.jpg",width=150)
-st.header("Query Hugging face datasets more easily")
+st.header("Query Hugging Face datasets more easily using DuckDB")
 
 sort_options = {
     "Trending": "trending_score",
