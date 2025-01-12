@@ -7,6 +7,9 @@ import polars as pl
 if 'datasets' not in st.session_state:
     st.session_state.datasets = []
 
+if 'cols_list' not in st.session_state:
+    st.session_state.cols_list = '*'
+
 if 'show_input' not in st.session_state:
     st.session_state.show_input = False
 
@@ -51,7 +54,7 @@ if st.button("Manually enter dataset"):
 if st.session_state.show_input:
     manual_dataset = st.text_input("Enter dataset name", key="manual_dataset_input")
     if st.button("Add Dataset"):
-        st.session_state.datasets.append(manual_dataset)
+        st.session_state.datasets.insert(0,manual_dataset)
         st.success(f"Added dataset: {manual_dataset}")
 
 dataset_to_preview = st.selectbox("Select dataset to preview", st.session_state.datasets)
@@ -64,6 +67,7 @@ st.write("view_name: " + view_name)
 st.write("Locate this dataset on Hugging Face: https://huggingface.co/datasets/" + dataset_to_preview)
 view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/*/*.parquet') );"
 select_query = f"SELECT * FROM {view_name} limit 1000;"
+top1_query = f"SELECT * FROM {view_name} limit 1;"
 st.code(view_query + "\n\n" + select_query)
 if st.button("Preview Dataset(1000 Rows)"):
     conn.execute(view_query)
@@ -74,8 +78,18 @@ if st.button("Preview Dataset(1000 Rows)"):
     # cornell-movie-review-data/rotten_tomatoes
     st.dataframe(result_df,hide_index=True,use_container_width=True)
     # st.write(result_df)
+    try:
+        conn.execute(view_query)
+        result_df = conn.sql(top1_query).df()
+        cols = result_df.columns
+        cols_list = cols.tolist()
+        st.session_state.cols_list = ', '.join(cols_list)
+    except:
+        st.session_state.cols_list = "*"
 
-query = st.text_area("Enter your query",value=f"{select_query}")
+place_holder_query = f"SELECT {st.session_state.cols_list} FROM {view_name} limit 1000;"
+
+query = st.text_area("Custom query",value=place_holder_query)
 if st.button("Run Query"):
     conn.execute(view_query)
     result_df = conn.sql(query).df()
