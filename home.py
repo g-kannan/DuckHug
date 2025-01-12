@@ -12,7 +12,8 @@ conn.execute("INSTALL httpfs;LOAD httpfs;")
 
 st.set_page_config(layout="wide")
 
-st.title("Query Hugging face datasets more easily")
+st.title("DuckHug")
+st.header("Query Hugging face datasets more easily")
 
 sort_options = {
     "Trending": "trending_score",
