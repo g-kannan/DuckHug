@@ -70,7 +70,7 @@ view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet
 select_query = f"SELECT * FROM {view_name} limit 100;"
 top1_query = f"SELECT * FROM {view_name} limit 1;"
 st.code(view_query + "\n\n" + select_query)
-if st.button("Preview Dataset(1000 Rows)"):
+if st.button("Preview Dataset(100 Rows)"):
     try:
         conn.execute(view_query)
         result_df = conn.sql(select_query).df()
