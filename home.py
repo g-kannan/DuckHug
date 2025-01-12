@@ -64,20 +64,19 @@ if dataset_to_preview is None:
 else:
     view_name = dataset_to_preview.replace("/","_").replace("-","_").replace(".","_").upper()
 st.write("view_name: " + view_name)
-st.write("Locate this dataset on Hugging Face: https://huggingface.co/datasets/" + dataset_to_preview)
+locate_dataset = "Check this dataset on Hugging Face: https://huggingface.co/datasets/" + dataset_to_preview
+st.write(locate_dataset)
 view_query = f"CREATE OR REPLACE VIEW {view_name} AS (SELECT * FROM read_parquet('hf://datasets/{dataset_to_preview}@~parquet/default/*/*.parquet') );"
 select_query = f"SELECT * FROM {view_name} limit 1000;"
 top1_query = f"SELECT * FROM {view_name} limit 1;"
 st.code(view_query + "\n\n" + select_query)
 if st.button("Preview Dataset(1000 Rows)"):
-    conn.execute(view_query)
-    result_df = conn.sql(select_query).df()
-    # result_df = conn.sql("SELECT * FROM read_parquet('hf://datasets/nyuuzyou/subdomains@~parquet/default/train/*.parquet') limit 1000;").df()
-    # result_df = conn.sql(f"SELECT * FROM read_parquet('hf://datasets/floworks/HubBench-queries@~parquet/default/train/*.parquet') limit {limit};").df()
-    # result_df = pl.read_csv('hf://datasets/Aurelium/github-repo-enumeration/**/*.csv').limit(1000)
-    # cornell-movie-review-data/rotten_tomatoes
-    st.dataframe(result_df,hide_index=True,use_container_width=True)
-    # st.write(result_df)
+    try:
+        conn.execute(view_query)
+        result_df = conn.sql(select_query).df()
+        st.dataframe(result_df,hide_index=True,use_container_width=True)
+    except:
+        st.warning("Failed to fetch dataset preview, this is usually due to the dataset having custom filepaths or its too large. Please " + locate_dataset)
     try:
         conn.execute(view_query)
         result_df = conn.sql(top1_query).df()
