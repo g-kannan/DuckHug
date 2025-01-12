@@ -1,0 +1,6 @@
+duckdb
+streamlit
+polars
+huggingface_hub
+datasets
+python-dotenv
