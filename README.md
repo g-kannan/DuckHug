@@ -9,7 +9,7 @@ Query Hugging Face datasets directly from Streamlit using DuckDB's powerful SQL 
 ### Dataset Management
 - 🔍 Browse and search Hugging Face datasets
 - ✏️ Manually add custom dataset paths
-- 👀 Preview datasets with up to 1000 rows
+- 👀 Preview datasets with up to 100 rows
 
 ### Query Capabilities
 - 📊 Automatic column detection
@@ -19,12 +19,15 @@ Query Hugging Face datasets directly from Streamlit using DuckDB's powerful SQL 
 ### User Experience
 - 🌟 Modern Streamlit-based UI
 - 🔗 Direct links to Hugging Face dataset pages
-- ⚡ Fast preview and query execution
 
-## Getting Started
+### Live app
+https://duckhug.streamlit.app/
+
+## Run locally
 1. Install dependencies: `pip install -r requirements.txt`
-2. Run the app: `streamlit run home.py`
-3. Start exploring datasets!
+2. Add your Hugging face API token to .env file(Only for fetching data sets, manual dataset will work without it)
+3. Run the app: `streamlit run home.py`
+4. Start exploring datasets!
 
 ## Credits
 - Powered by DuckDB: [Star on GitHub](https://github.com/duckdb/duckdb)
