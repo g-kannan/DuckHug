@@ -93,3 +93,9 @@ if st.button("Run Query"):
     conn.execute(view_query)
     result_df = conn.sql(query).df()
     st.dataframe(result_df,hide_index=True,use_container_width=True)
+
+st.divider()
+st.write("Thanks to the Hugging Face & DuckDB team for thier awesome work")
+st.write("If you still havent starred DuckDB, please do it first: https://github.com/duckdb/duckdb")
+st.write("DuckHug Logo was created using Hugging Face model: https://huggingface.co/black-forest-labs/FLUX.1-dev")
+st.write("If you find this useful, please give us a star on GitHub: https://github.com/g-kannan/DuckHug")
