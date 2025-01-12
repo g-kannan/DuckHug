@@ -7,7 +7,7 @@ load_dotenv()
 huggingface_token = os.getenv("HUGGINGFACE_TOKEN")
 
 
-def get_hf_datasets(sort_option,file_format,limit: int = 10) -> List[str]:
+def get_hf_datasets(sort_option,file_format) -> List[str]:
     try:
         # Initialize the Hugging Face API client
         api = HfApi(endpoint="https://huggingface.co",token=huggingface_token)
@@ -18,7 +18,7 @@ def get_hf_datasets(sort_option,file_format,limit: int = 10) -> List[str]:
             gated=False,
             expand=["description"],
             tags=f"format:{file_format}", 
-            limit=limit
+            limit=10
         )
         
         # Extract just the dataset names
